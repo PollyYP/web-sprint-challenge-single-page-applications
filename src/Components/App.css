@@ -1,0 +1,19 @@
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 10vh;
+  background: rgb(145, 145, 153);
+  color: white;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: flex-end;
+  width: 50%;
+  list-style: none;
+}
+
+li {
+  padding-left: 4vh;
+}
