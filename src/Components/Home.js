@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -6,12 +7,21 @@ export default function Home() {
       <nav>
         <h2>Lambda Eats</h2>
         <ul className="nav-links">
-          <li>Home</li>
+          <Link to="/">
+            <li>Home</li>
+          </Link>
           <li>Help</li>
         </ul>
       </nav>
-      <div className="btn-container">
-        <button className="btn">Pizza?</button>
+      <div>
+        <h1 className="homepage">
+          Your favorite foods, delivered while coding
+        </h1>
+        <div className="center">
+          <Link to="/pizza">
+            <button className="btn">Pizza?</button>
+          </Link>
+        </div>
       </div>
     </div>
   );
