@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -21,10 +21,10 @@ const schema = yup.object().shape({
       "Garlic Parmesan Sauce",
       "Alfredo Sauce",
     ]),
-  toppings: yup
+  special: yup
     .string()
     .required("Name is required")
-    .max(10, "Choose up to 10 toppings"),
+    .min(2, "name must be at least 2 characters"),
 });
 
 export default function Form(props) {
@@ -32,16 +32,16 @@ export default function Form(props) {
     name: "",
     size: "",
     sauce: "",
-    toppings: "",
+    toppings: false,
     special: "",
   });
+
   const [disabled, setDisabled] = useState(true);
+
   const [errors, setErrors] = useState({
     name: "",
     size: "",
     sauce: "",
-    toppings: "",
-    special: "",
   });
 
   const setFormErrors = (name, value) => {
@@ -49,7 +49,7 @@ export default function Form(props) {
       .reach(schema, name)
       .validate(value)
       .then(() => setErrors({ ...errors, [name]: "" }))
-      .catch((err) => setErrors({ ...errors, [name]: err.errors[0] }));
+      .catch((err) => setErrors({ ...errors, [name]: err.errors }));
   };
 
   const handleChange = (event) => {
@@ -63,28 +63,21 @@ export default function Form(props) {
     schema.isValid(form).then((valid) => setDisabled(!valid));
   }, [form]);
 
-  const submit = () => {
-    props.setNewOrder({
-      name: form.name,
-      size: form.size,
-      sauce: form.sauce,
-      toppings: form.toppings,
-      special: form.special,
-    });
+  let history = useHistory();
+  const submitOrder = (event) => {
+    event.preventDefault();
+    props.setNewOrder([...props.newOrder, form]);
   };
 
   return (
     <div>
       <div>
         <h2>Build Your Own Pizza</h2>
-        <form onSubmit={submit}>
-          <div className="error-message">
-            <p>{errors.name}</p>
-            <p>{errors.size}</p>
-            <p>{errors.sauce}</p>
-            <p>{errors.toppings}</p>
+        <form onSubmit={submitOrder}>
+          <div>
+            <p className="error-message">{errors.name}</p>
           </div>
-          <label for="name">Name:</label>
+          <label htmlFor="name">Name:</label>
           <input
             onChange={handleChange}
             value={form.name}
@@ -95,8 +88,10 @@ export default function Form(props) {
         </form>
         <h4>Choice of Size</h4>
         <p>Required</p>
+        <p className="error-message">{errors.size}</p>
       </div>
       <select onChange={handleChange} value={form.size} name="size">
+        <option value="">Please select</option>
         <option value="small">Small (10")</option>
         <option value="medium">Medium (12")</option>
         <option value="large">Large (14")</option>
@@ -105,6 +100,7 @@ export default function Form(props) {
       <div>
         <h4>Choice of Sauce</h4>
         <p>Required</p>
+        <p className="error-message">{errors.sauce}</p>
       </div>
       <form>
         <input
@@ -115,7 +111,7 @@ export default function Form(props) {
           name="sauce"
           value="Robust Inspired Tomato Sauce"
         />
-        <label for="male">Robust Inspired Tomato Sauce</label>
+        <label htmlFor="male">Robust Inspired Tomato Sauce</label>
         <br />
         <input
           onChange={handleChange}
@@ -125,7 +121,7 @@ export default function Form(props) {
           name="sauce"
           value="Hearty Marinara Sauce"
         />
-        <label for="female">Hearty Marinara Sauce</label>
+        <label htmlFor="female">Hearty Marinara Sauce</label>
         <br />
         <input
           onChange={handleChange}
@@ -135,7 +131,7 @@ export default function Form(props) {
           name="sauce"
           value="Garlic Parmesan Sauce"
         />
-        <label for="other">Garlic Parmesan Sauce</label>
+        <label htmlFor="other">Garlic Parmesan Sauce</label>
         <br />
         <input
           onChange={handleChange}
@@ -145,60 +141,32 @@ export default function Form(props) {
           name="sauce"
           value="Alfredo Sauce"
         />
-        <label for="other">Alfredo Sauce</label>
+        <label htmlFor="other">Alfredo Sauce</label>
       </form>
       <div>
         <h4>Add Toppings</h4>
-        <p>Choose up to 10</p>
       </div>
       <form>
-        <input
-          onChange={handleChange}
-          type="checkbox"
-          id="topping1"
-          name="toppings"
-        />
-        <label for="topping1"> Jalapeno Peppers</label>
+        <input onChange={handleChange} type="checkbox" id="topping1" />
+        <label htmlFor="topping1"> Jalapeno Peppers</label>
         <br />
-        <input
-          onChange={handleChange}
-          type="checkbox"
-          id="topping2"
-          name="toppings"
-        />
-        <label for="topping2"> Banana Peppers</label>
+        <input onChange={handleChange} type="checkbox" id="topping2" />
+        <label htmlFor="topping2"> Banana Peppers</label>
         <br />
-        <input
-          onChange={handleChange}
-          type="checkbox"
-          id="topping3"
-          name="toppings"
-        />
-        <label for="topping3"> Diced Tomatoes</label>
+        <input onChange={handleChange} type="checkbox" id="topping3" />
+        <label htmlFor="topping3"> Diced Tomatoes</label>
         <br />
-        <input
-          onChange={handleChange}
-          type="checkbox"
-          id="topping4"
-          name="toppings"
-        />
-        <label for="topping4"> Black Olives</label>
+        <input onChange={handleChange} type="checkbox" id="topping4" />
+        <label htmlFor="topping4"> Mushrooms</label>
         <br />
-        <input
-          onChange={handleChange}
-          type="checkbox"
-          id="topping5"
-          name="toppings"
-        />
-        <label for="topping5"> Mushrooms</label>
+        <input onChange={handleChange} type="checkbox" id="topping5" />
+        <label htmlFor="topping5"> Ham</label>
         <br />
-        <input
-          onChange={handleChange}
-          type="checkbox"
-          id="topping6"
-          name="toppings"
-        />
-        <label for="topping6"> Green Peppers</label>
+        <input onChange={handleChange} type="checkbox" id="topping6" />
+        <label htmlFor="topping6">Bacon</label>
+        <br />
+        <input onChange={handleChange} type="checkbox" id="topping7" />
+        <label htmlFor="topping7">Pepperoni</label>
         <br />
       </form>
       <div>
@@ -213,11 +181,13 @@ export default function Form(props) {
           value={form.special}
         />
       </form>
-      <Link to="/completedOrder">
-        <button disabled={disabled} type="submit">
-          Add to Order
-        </button>
-      </Link>
+      <button
+        className="btn"
+        disabled={disabled}
+        onClick={() => history.push("/completedOrder")}
+      >
+        Add to Order
+      </button>
     </div>
   );
 }

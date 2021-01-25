@@ -5,7 +5,7 @@ export default function Order(props) {
     <div>
       <h1>Congrats! pizza is on its way!</h1>
       <h5>Order confirmed</h5>
-      <p>{props.newOrder}</p>
+      {props.newOrder}
     </div>
   );
 }
