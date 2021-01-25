@@ -31,8 +31,13 @@ Commit your code regularly and meaningfully. This helps both you (in case you ev
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question.
 
 1. In 1-2 sentences, explain what React's `useRouteMatch` hook is used for.
+   For matching url that we need to use dynamically without rendering Route.
+
 1. How would you explain form validation to someone who has never programmed before?
+   We set up form validation to check if the information provided by a user is correct and meet our requirements.
+
 1. In 1-2 sentences, define end to end testing.
+   A testing that test an application's workflow from beginning to end.
 
 ## Instructions
 
